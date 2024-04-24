@@ -1,5 +1,5 @@
-# 🎶🎮 soundaim
-A 3D rhythm game, where you aim at notes to the beat
+# soundaim
+a 3D rhythm game based on Sound Space
 
 ## Try it out
 You can download the project and try it on Windows, Linus, Mac, and compile it for even more.
