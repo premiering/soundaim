@@ -1,0 +1,52 @@
+[package]
+name = "soundaim"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = { version = "0.13", default-features = false, features = [
+    "animation",
+    "bevy_asset",
+    "bevy_gilrs",
+    "bevy_scene",
+    "bevy_winit",
+    "bevy_core_pipeline",
+    "bevy_pbr",
+    "bevy_gltf",
+    "bevy_render",
+    "bevy_sprite",
+    "bevy_text",
+    "bevy_ui",
+    "multi-threaded",
+    "png",
+    "hdr",
+    "x11",
+    "bevy_gizmos",
+    "tonemapping_luts",
+    "default_font",
+    "webgl2",
+] }
+bevy_kira_audio = { version = "0.19", default-features = false, features = ["mp3", "ogg", "wav"]}
+bevy_obj = "0.13"
+bevy_mod_billboard = { version = "0.6.0", git = "https://github.com/kulkalkul/bevy_mod_billboard"} # Commit 1fabd22 is the intended version, can't use crates.io since it's not updated yet
+num-format = "0.4.4"
+bevy_common_assets = { version = "0.10", features = ["json"]}
+serde = { version = "1" }
+serde_json = { version = "1" }
+bevy_egui = "0.27"
+
+# Debugging // optimize other dependencies since they're not recompiled as much
+[profile.dev.package."*"]
+opt-level = 3
+
+# Debugging // barely optimize our code
+[profile.dev]
+opt-level = 1
+
+# Release // max compiler optimizations
+[profile.release]
+lto = true
+opt-level = 3
+codegen-units = 1
+incremental = false
+debug = false
