@@ -33,7 +33,6 @@ num-format = "0.4.4"
 bevy_common_assets = { version = "0.10", features = ["json"]}
 serde = { version = "1" }
 serde_json = { version = "1" }
-bevy_egui = "0.27"
 
 # Debugging // optimize other dependencies since they're not recompiled as much
 [profile.dev.package."*"]

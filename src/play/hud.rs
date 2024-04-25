@@ -315,7 +315,7 @@ fn get_play_grade_color(grade: PlayGrade) -> Color {
 fn get_accuracy_color(grade: PlayGrade) -> Color {
     match grade {
         PlayGrade::SS => {
-            Color::hex("#03ff2d").unwrap()
+            Color::hex("#e329d7").unwrap()
         },
         PlayGrade::A => {
             Color::hex("#03ff2d").unwrap()

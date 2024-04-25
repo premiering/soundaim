@@ -1,4 +1,4 @@
-use bevy::{asset::Handle, ecs::{component::Component, system::Resource}, pbr::StandardMaterial};
+use bevy::{asset::Handle, ecs::{component::Component, system::Resource}, pbr::StandardMaterial, render::view::VisibilityBundle};
 
 use bevy::{asset::Assets, ecs::{entity::Entity, query::{With, Without}, schedule::NextState, system::{Commands, Query, Res, ResMut}}, log::info, math::Vec3, pbr::{AlphaMode, PbrBundle}, render::{color::Color, view::Visibility}, time::Time, transform::components::Transform, utils::default};
 use bevy_kira_audio::prelude::*;
@@ -200,6 +200,7 @@ pub fn on_update(
         let z_ratio: f32 = (note.hit_ms - current_time_ms) as f32 / APPROACH_RATE as f32; 
         let z: f32 = (z_ratio * APPROACH_DIST) as f32;
         let note_color = note_palette.get_next().into();
+        // Too many materials / inefficient ?
         let mat = materials.add(StandardMaterial {
             base_color: note_color,
             alpha_mode: AlphaMode::Blend,
