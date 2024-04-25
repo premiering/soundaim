@@ -122,14 +122,27 @@ pub fn on_update(
     mut q_cursor: Query<&mut Transform, (With<Cursor>, Without<PlayNote>)>,
     mut state: ResMut<NextState<GameState>>,
     mut commands: Commands) {
-    let mut current_time = time.elapsed();
+    let current_time = time.elapsed();
     //current_time = PlayStatePlugin::duration_add_signed(current_time, data.resync_offset_ms);
     let mut current_time_ms = current_time.as_millis() as i128 - data.start_time.as_millis() as i128;
+
+    let first_note_time = data.note_data.0[0].hit_ms;
+    let mut is_waiting_to_start = false;
+    // If the first note of the map is pops up too fast
+    // we will wait a little time so that it can pop up.
+    if first_note_time <= WAIT_TIME_START_FINISH {
+        current_time_ms -= WAIT_TIME_START_FINISH;
+        is_waiting_to_start = current_time_ms < 0;
+    }
 
     // Sync audio and game if required
     if let Some(instance) = audio_instances.get_mut(&data.song) {
         match instance.state() {
             PlaybackState::Playing { position } => {
+                if is_waiting_to_start {
+                    instance.pause(AudioTween::default());
+                    return;
+                }
                 let audio_offset = ((position / data.play_speed as f64) * 1000.0) as i128 - current_time_ms;
                 if audio_offset.abs() >= GAME_RESYNC_THRESHOLD {
                     info!("Resyncing audio by {0}ms", audio_offset);
@@ -138,7 +151,9 @@ pub fn on_update(
                 }
             }
             _ => {
-                instance.resume(AudioTween::default());
+                if !is_waiting_to_start {
+                    instance.resume(AudioTween::default());
+                }
             }
         }
     }
